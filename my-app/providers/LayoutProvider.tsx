@@ -17,17 +17,16 @@ function LayoutProvider({
   );
 
   const getNavbar = () => {
-    if (isPublicRoute) return null;
     return <Navbar />;
   };
 
   const getFooter = () => {
-    if (isPublicRoute) return null;
+    
     return <Footer />;
   };
 
   const getContent = () => {
-    if (isPublicRoute) return null;
+    
     return <>{children}</>;
   };
 
@@ -48,7 +47,7 @@ function LayoutProvider({
   }, []);
 
   return (
-    <div className="min-h-screen bg-secondary flex flexCol justify-between">
+    <div className="min-h-screen bg-secondary flex flex-col justify-between">
       {getNavbar()}
       {getContent()}
       {getFooter()}
