@@ -3,41 +3,42 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { userId, quizScore, correctAnswers, wrongAnswers } = body;
+  const { userId, quizId, quizScore, correctAnswers, wrongAnswers } = body;
 
   try {
-    let existingUser = await prisma.user.findUnique({
-      where: { id: userId },
-      include: { quizResults: true },
+    // Find the user's quiz result for the specific quizId
+    const existingQuizResult = await prisma.quizResult.findFirst({
+      where: { userId: userId, quizId: quizId },
     });
 
-    if (existingUser && existingUser.quizResults && existingUser.quizResults.length > 0) {
-      const updatedUserStats = await prisma.quizResult.update({
-        where: { id: existingUser.quizResults[0].id },
+    if (existingQuizResult) {
+      // Update the existing quiz result for the specific quizId
+      const updatedQuizResult = await prisma.quizResult.update({
+        where: { id: existingQuizResult.id },
         data: {
           quizScore: quizScore,
           correctAnswers: correctAnswers,
           wrongAnswers: wrongAnswers,
         },
       });
-      return NextResponse.json({ updatedUserStats });
+      return NextResponse.json({ updatedQuizResult });
     } else {
-      const newUser = await prisma.user.update({
-        where: { id: userId },
+      // Create a new quiz result for the specific quizId
+      const newQuizResult = await prisma.quizResult.create({
         data: {
-          quizResults: {
-            create: {
-              quizScore: quizScore,
-              correctAnswers: correctAnswers,
-              wrongAnswers: wrongAnswers,
-            },
+          quizScore: quizScore,
+          correctAnswers: correctAnswers,
+          wrongAnswers: wrongAnswers,
+          quizId: quizId,
+          user: {
+            connect: { id: userId },
           },
         },
       });
-      return NextResponse.json({ newUser });
+      return NextResponse.json({ newQuizResult });
     }
   } catch (error) {
     console.error(error);
-    return;
+    return NextResponse.error();
   }
 }

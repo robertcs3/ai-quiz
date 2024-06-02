@@ -18,6 +18,13 @@ export default {
         name: "correctAnswer",
         title: "Correct Answer",
         type: "string"
-      }
+      },
+      {
+        name: "quizId",
+        title: "Quiz Id",
+        type: "string"
+      },
     ]
   }
+
+  

@@ -1,30 +1,14 @@
-import Quiz from "../../components/Quiz";
-import { client } from "../../sanity/lib/client";
-import { fetchUsers } from "../(auth)/actions/fetchUsers";
 import React from "react";
+import Link from 'next/link'
 
-export const dynamic = "force-dynamic";
-
-async function getData() {
-  const query = `*[_type == "questions"]{
-    question,
-    answers,
-    correctAnswer
-  }`;
-
-  const data = await client.fetch(query);
-
-  return data;
-}
-
-const page = async () => {
-  const questions = await getData();
-  const user = await fetchUsers();
-  const userId = user?.data?.user.id;
+const page = () => {
+ 
   return (
-    <>
-      <Quiz questions={questions} userId={userId} />
-    </>
+    <section className="relative w-full min-h-[500px] flex flex-col items-center justify-center text-center"> 
+      <Link href='/quiz/1'>What is Artificial Intelligence?</Link>
+      <Link href='/quiz/2'>AI Chatbot Basics</Link>
+    </section>
+   
   );
 };
 

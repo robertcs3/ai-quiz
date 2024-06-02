@@ -7,11 +7,17 @@ interface QuizProps {
         question: string;
         answers: string[];
         correctAnswer: string;
+        quizId: string;
     }[];
+    selectedQuizId: string;
     userId: string | undefined;
 }
 
-const Quiz = ({ questions, userId }: QuizProps) => {
+const Quiz = ({ questions, userId, selectedQuizId }: QuizProps) => {
+    const filteredQuestions = questions.filter(
+        (q) => q.quizId === selectedQuizId
+    );
+
     const [activeQuestion, setActiveQuestion] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState("");
     const [checked, setChecked] = useState(false);
@@ -24,8 +30,8 @@ const Quiz = ({ questions, userId }: QuizProps) => {
         wrongAnswers: 0,
     });
 
-    const { question, answers, correctAnswer } =
-        questions[activeQuestion];
+    const { question, answers, correctAnswer, quizId } =
+        filteredQuestions[activeQuestion];
 
     const onAnswerSelected = (
         answer: string,
@@ -54,7 +60,7 @@ const Quiz = ({ questions, userId }: QuizProps) => {
                     wrongAnswers: prev.wrongAnswers + 1,
                 }
         );
-        if (activeQuestion !== questions.length - 1) {
+        if (activeQuestion !== filteredQuestions.length - 1) {
             setActiveQuestion((prev) => prev + 1);
         } else {
             setShowResults(true);
@@ -71,6 +77,7 @@ const Quiz = ({ questions, userId }: QuizProps) => {
                 },
                 body: JSON.stringify({
                     userId: userId,
+                    quizId: quizId,
                     quizScore: results.score,
                     correctAnswers: results.correctAnswers,
                     wrongAnswers: results.wrongAnswers,
@@ -100,7 +107,7 @@ const Quiz = ({ questions, userId }: QuizProps) => {
                             <div className="bg-primary text-white px-4 rounded-md py-1">
                                 <h2>
                                     Question: {activeQuestion + 1}
-                                    <span>/{questions.length}</span>
+                                    <span>/{filteredQuestions.length}</span>
                                 </h2>
                             </div>
 
@@ -134,7 +141,7 @@ const Quiz = ({ questions, userId }: QuizProps) => {
                                 disabled={!checked}
                                 className="font-bold"
                             >
-                                {activeQuestion === questions.length - 1
+                                {activeQuestion === filteredQuestions.length - 1
                                     ? "Finish"
                                     : "Next Question →"}
                             </button>
@@ -148,11 +155,11 @@ const Quiz = ({ questions, userId }: QuizProps) => {
                         <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-10">
                             <StatCard
                                 title="Percentage"
-                                value={`${(results.score / questions.length) * 100}%`}
+                                value={`${(results.score / filteredQuestions.length) * 100}%`}
                             />
                             <StatCard
                                 title="Total Questions"
-                                value={questions.length}
+                                value={filteredQuestions.length}
                             />
                             <StatCard
                                 title=" Total Score"
