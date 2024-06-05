@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter as FontSans } from "next/font/google"
 import "./globals.css";
+import { cn } from "@/lib/utils"
 import {
   ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton
 } from '@clerk/nextjs'
 import LayoutProvider from "@/providers/LayoutProvider";
-const inter = Inter({ subsets: ["latin"] });
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 
 export const metadata: Metadata = {
   title: "TCFP Quizzes",
@@ -22,9 +22,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider appearance={{
+      variables: {
+          colorPrimary: 'hsl(222.2, 47.4%, 11.2%)', 
+              },
+          }}>
     <html lang='en'>
-      <body className={`${inter.className} min-h-screen`}>
+      <body className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          fontSans.variable
+        )}>
         <LayoutProvider>{children}</LayoutProvider>
       </body>
     </html>
