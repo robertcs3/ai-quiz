@@ -14,6 +14,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 
+
 const Navbar = () => {
   return (
     <div className="pt-5 w-full">
@@ -51,6 +52,7 @@ const Navbar = () => {
         
 
         <div className="flex items-center gap-3 justify-end">
+          
           <SignedOut>
               <SignInButton />
             </SignedOut>

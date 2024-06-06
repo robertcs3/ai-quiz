@@ -3,8 +3,8 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { userId, quizId, quizScore, correctAnswers, wrongAnswers } = body;
-
+  const { userId, quizId, quizScore, correctAnswers, wrongAnswers} = body;
+  const createdAt = new Date().toISOString();
   try {
     // Find the user's quiz result for the specific quizId
     const existingQuizResult = await prisma.quizResult.findFirst({
@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
           quizScore: quizScore,
           correctAnswers: correctAnswers,
           wrongAnswers: wrongAnswers,
+          createdAt: createdAt,
         },
       });
       return NextResponse.json({ updatedQuizResult });

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import StatCard from "./StatCard";
-
+import { Button } from "@/components/ui/button"
 interface QuizProps {
     questions: {
         question: string;
@@ -48,6 +48,7 @@ const Quiz = ({ questions, userId, selectedQuizId }: QuizProps) => {
 
     const nextQuestion = () => {
         setSelectedAnswerIndex(null);
+        setChecked(false);
         setResults((prev) =>
             selectedAnswer
                 ? {
@@ -64,7 +65,6 @@ const Quiz = ({ questions, userId, selectedQuizId }: QuizProps) => {
             setActiveQuestion((prev) => prev + 1);
         } else {
             setShowResults(true);
-            setChecked(false);
         }
     };
 
@@ -118,33 +118,29 @@ const Quiz = ({ questions, userId, selectedQuizId }: QuizProps) => {
                                 {question}
                             </h3>
                             <ul>
-                                {answers.map(
-                                    (answer: string, idx: number) => (
-                                        <li
-                                            key={idx}
-                                            onClick={() =>
-                                                onAnswerSelected(answer, idx)
-                                            }
-                                            className={`cursor-pointer mb-5 py-3 rounded-md hover:bg-primary hover:text-white px-3
-                      ${selectedAnswerIndex === idx &&
-                                                "bg-primary text-white"
-                                                }
-                      `}
-                                        >
-                                            <span>{answer}</span>
-                                        </li>
-                                    )
-                                )}
+                                {answers.map((answer: string, idx: number) => (
+                                    <li
+                                        key={idx}
+                                        className={`block w-fit cursor-pointer mb-5 py-3 rounded-md transition ease-in-out duration-500 px-3
+        ${selectedAnswerIndex === idx ? "bg-primary text-white" : "hover:bg-primary hover:text-white"}`}
+                                        onClick={() => onAnswerSelected(answer, idx)}
+                                    >
+                                        <span>{answer}</span>
+                                    </li>
+                                ))}
                             </ul>
-                            <button
+
+
+                            <Button
                                 onClick={nextQuestion}
                                 disabled={!checked}
                                 className="font-bold"
+                                variant={"outline"}
                             >
                                 {activeQuestion === filteredQuestions.length - 1
                                     ? "Finish"
                                     : "Next Question →"}
-                            </button>
+                            </Button>
                         </div>
                     </>
                 ) : (
