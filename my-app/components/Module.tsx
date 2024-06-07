@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-
+import { Button } from "@/components/ui/button"
 interface ModuleProps {
     modules: {
         title: string;
@@ -22,8 +22,14 @@ const Module = ({ modules, selectedModuleId }: ModuleProps) => {
         filteredModules[activeModule];
 
     const nextModule = () => {
-        if (activeModule !== filteredModules.length - 1){
+        if (activeModule !== filteredModules.length - 1) {
             setActiveModule((prev) => prev + 1);
+        }
+    };
+
+    const prevModule = () => {
+        if (activeModule > 0) {
+            setActiveModule((prev) => prev - 1);
         }
     };
 
@@ -52,11 +58,22 @@ const Module = ({ modules, selectedModuleId }: ModuleProps) => {
                         ))}
                     </ul>
                 </div>
-                <button onClick={nextModule} className="font-bold">
-                    {activeModule === filteredModules.length -1
-                    ? "Take the Quiz!"
-                    : "Next Module →"}
-                </button>
+                <div className="flex justify-center gap-10">
+                    <Button
+                        onClick={prevModule}
+                        disabled={activeModule === 0}
+                        className="font-bold"
+                        variant={"outline"}
+                    >
+                        ← Previous
+                    </Button>
+
+                    <Button onClick={nextModule} className="font-bold">
+                        {activeModule === filteredModules.length - 1
+                            ? "Take the Quiz!"
+                            : "Next →"}
+                    </Button>
+                </div>
             </div>
         </div>
     );

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import StatCard from "./StatCard";
 import { Button } from "@/components/ui/button"
+
 interface QuizProps {
     questions: {
         question: string;
@@ -68,6 +69,14 @@ const Quiz = ({ questions, userId, selectedQuizId }: QuizProps) => {
         }
     };
 
+    const prevQuestion = () => {
+        if (activeQuestion > 0) {
+            setActiveQuestion((prev) => prev - 1);
+            setSelectedAnswerIndex(null);
+            setChecked(false);
+        }
+    };
+
     useEffect(() => {
         if (showResults) {
             fetch("/api/quizResults", {
@@ -98,6 +107,8 @@ const Quiz = ({ questions, userId, selectedQuizId }: QuizProps) => {
         }
     }, [showResults, results, userId]);
 
+    const answerLabels = ["A.", "B.", "C.", "D."];
+
     return (
         <div className="min-h-[500px]">
             <div className="max-w-[1500px] mx-auto w-[90%] flex justify-center py-10 flex-col">
@@ -125,22 +136,32 @@ const Quiz = ({ questions, userId, selectedQuizId }: QuizProps) => {
         ${selectedAnswerIndex === idx ? "bg-primary text-white" : "hover:bg-primary hover:text-white"}`}
                                         onClick={() => onAnswerSelected(answer, idx)}
                                     >
-                                        <span>{answer}</span>
+                                        <span>{answerLabels[idx]} {answer}</span>
                                     </li>
                                 ))}
                             </ul>
 
+                            <div className="flex  gap-10">
+                                <Button
+                                    onClick={prevQuestion}
+                                    disabled={activeQuestion === 0}
+                                    className="font-bold"
+                                    variant={"outline"}
+                                >
+                                    ← Prev
+                                </Button>
 
-                            <Button
-                                onClick={nextQuestion}
-                                disabled={!checked}
-                                className="font-bold"
-                                variant={"outline"}
-                            >
-                                {activeQuestion === filteredQuestions.length - 1
-                                    ? "Finish"
-                                    : "Next Question →"}
-                            </Button>
+                                <Button
+                                    onClick={nextQuestion}
+                                    disabled={!checked}
+                                    className="font-bold"
+                                    variant={"outline"}
+                                >
+                                    {activeQuestion === filteredQuestions.length - 1
+                                        ? "Finish"
+                                        : "Next →"}
+                                </Button>
+                            </div>
                         </div>
                     </>
                 ) : (

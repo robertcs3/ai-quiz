@@ -18,6 +18,7 @@ const config = {
       },
     },
     extend: {
+
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
@@ -62,6 +63,10 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        fadeIn: {
+          from: { opacity: "0" },
+					to: { opacity: "1" },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -72,6 +77,7 @@ const config = {
         },
       },
       animation: {
+        fade: "fadeIn .5s ease-in-out",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
