@@ -15,6 +15,7 @@ interface QuizProps {
 }
 
 const Quiz = ({ questions, userId, selectedQuizId }: QuizProps) => {
+    console.log(questions);
     const filteredQuestions = questions.filter(
         (q) => q.quizId === selectedQuizId
     );

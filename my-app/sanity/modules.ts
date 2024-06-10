@@ -9,11 +9,6 @@ export default {
         type: "string"
       },
       {
-        name: "summary",
-        title: "Summary",
-        type: "string"
-      },
-      {
         name: 'sections',
         title: "Sections",
         type: 'array',

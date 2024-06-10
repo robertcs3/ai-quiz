@@ -1,6 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
+import { Container } from "./Container";
+
 interface ModuleProps {
     modules: {
         title: string;
@@ -16,66 +17,37 @@ const Module = ({ modules, selectedModuleId }: ModuleProps) => {
         (m) => m.moduleId === selectedModuleId
     );
 
-    const [activeModule, setActiveModule] = useState(0);
-
-    const { title, summary, sections, moduleId } =
-        filteredModules[activeModule];
-
-    const nextModule = () => {
-        if (activeModule !== filteredModules.length - 1) {
-            setActiveModule((prev) => prev + 1);
-        }
-    };
-
-    const prevModule = () => {
-        if (activeModule > 0) {
-            setActiveModule((prev) => prev - 1);
-        }
-    };
-
     return (
-        <div className="min-h-[500px]">
-            <div className="max-w-[1500px] mx-auto w-[90%] flex justify-center py-10 flex-col">
-                <div className="flex justify-between mb-10 items-center">
-                    <div className="bg-primary text-white px-4 rounded-md py-1">
-                        <h2>
-                            Threat: {activeModule + 1}
-                            <span>/{filteredModules.length}</span>
-                        </h2>
+        <Container variant={"narrowConstrainedPadded"}>
+            <div className="min-h-[500px]">
+                <div className="max-w-[1500px] mx-auto w-[90%] flex flex-col py-10">
+                    {filteredModules.map((module, index) => (
+                        <div key={index} className="mb-10">
+                            <div className="flex justify-between mb-10 items-center">
+            
+                                <div>
+                                    <h3 className="mb-5 text-2xl font-bold">
+                                        {module.title}
+                                    </h3>
+                                </div>
+                            </div>
+                            <div>
+                                <ul>
+                                    {module.sections.map((section, sectionIndex) => (
+                                        <li key={sectionIndex}>{section}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    ))}
+                    <div className="flex justify-center">
+                        <Button className="font-bold">
+                            Take the Quiz!
+                        </Button>
                     </div>
-
-                    <div>
-                        <h3 className="mb-5 text-2xl font-bold">
-                            {title}
-                        </h3>
-                    </div>
-                </div>
-                <div>
-                    <p>{summary}</p>
-                    <ul>
-                        {sections.map((section, index) => (
-                            <li key={index}>{section}</li>
-                        ))}
-                    </ul>
-                </div>
-                <div className="flex justify-center gap-10">
-                    <Button
-                        onClick={prevModule}
-                        disabled={activeModule === 0}
-                        className="font-bold"
-                        variant={"outline"}
-                    >
-                        ← Previous
-                    </Button>
-
-                    <Button onClick={nextModule} className="font-bold">
-                        {activeModule === filteredModules.length - 1
-                            ? "Take the Quiz!"
-                            : "Next →"}
-                    </Button>
                 </div>
             </div>
-        </div>
+        </Container>
     );
 };
 

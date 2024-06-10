@@ -2,6 +2,7 @@ import React from 'react'
 import Module from '@/components/Module';
 import { client } from "../../../sanity/lib/client";
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 async function getData() {
   const query = `*[_type == "modules"]{
     modules,
