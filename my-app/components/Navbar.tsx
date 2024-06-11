@@ -1,5 +1,5 @@
 "use client";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignIn, SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { MdQuiz } from "react-icons/md";
 import {
@@ -8,8 +8,6 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { Container } from "./Container";
-
-
 const Navbar = () => {
   return (
     <Container className="sticky top-0 z-50 bg-white" variant={"breakpointPadded"}>

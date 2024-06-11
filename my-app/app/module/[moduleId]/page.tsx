@@ -23,9 +23,9 @@ const page = async ({ params, }: {
   const modules = await getData();
   
 return (
-  <div>
-      <Module modules={modules} selectedModuleId={params.moduleId} />
-  </div>
+  <>
+    <Module modules={modules} selectedModuleId={params.moduleId} />
+  </>
 )
 }
 

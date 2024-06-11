@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { fetchUsers } from "@/app/(auth)/actions/fetchUsers";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -15,6 +15,7 @@ function LayoutProvider({
   const isPublicRoute = ["sign-in", "sign-up"].includes(
     pathname.split("/")[1]
   );
+
 
   const getNavbar = () => {
     return <Navbar />;
