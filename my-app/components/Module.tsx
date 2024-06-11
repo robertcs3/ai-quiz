@@ -22,21 +22,21 @@ const Module = ({ modules, selectedModuleId }: ModuleProps) => {
             <div className="min-h-[500px]">
                 <div className="max-w-[1500px] mx-auto w-[90%] flex flex-col py-10">
                     {filteredModules.map((module, index) => (
-                        <div key={index} className="mb-10">
-                            <div className="flex justify-between mb-10 items-center">
+                        <div key={index} className="mb-10 border-b-2">
+                            <div className="flex mb-10 ">
             
                                 <div>
-                                    <h3 className="mb-5 text-2xl font-bold">
+                                    <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
                                         {module.title}
                                     </h3>
                                 </div>
                             </div>
-                            <div>
-                                <ul>
+                            <div className=" pb-12">
+                                
                                     {module.sections.map((section, sectionIndex) => (
-                                        <li key={sectionIndex}>{section}</li>
+                                        <p key={sectionIndex} className="leading-7 [&:not(:first-child)]:mt-6">{section}</p>
                                     ))}
-                                </ul>
+                                
                             </div>
                         </div>
                     ))}

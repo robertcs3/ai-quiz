@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import StatCard from "./StatCard";
 import { Button } from "@/components/ui/button"
+import { Container } from "./Container";
 
 interface QuizProps {
     questions: {
@@ -111,97 +112,95 @@ const Quiz = ({ questions, userId, selectedQuizId }: QuizProps) => {
     const answerLabels = ["A.", "B.", "C.", "D."];
 
     return (
-        <div className="min-h-[500px]">
-            <div className="max-w-[1500px] mx-auto w-[90%] flex justify-center py-10 flex-col">
-                {!showResults ? (
-                    <>
-                        <div className="flex justify-between mb-10 items-center">
-                            <div className="bg-primary text-white px-4 rounded-md py-1">
-                                <h2>
-                                    Question: {activeQuestion + 1}
-                                    <span>/{filteredQuestions.length}</span>
-                                </h2>
+        <Container variant={"constrainedPadded"}>
+            <div className="min-h-[500px]">
+                <div className="max-w-[1500px] mx-auto w-[90%] flex justify-center py-10 flex-col">
+                    {!showResults ? (
+                        <>
+                            <div className="flex justify-between mb-8 items-center">
+                                <div className="bg-primary text-white px-4 rounded-md py-1">
+                                    <h2>
+                                        Question: {activeQuestion + 1}
+                                        <span>/{filteredQuestions.length}</span>
+                                    </h2>
+                                </div>
                             </div>
-
-                        </div>
-
-                        <div>
-                            <h3 className="mb-5 text-2xl font-bold">
-                                {question}
-                            </h3>
-                            <ul>
-                                {answers.map((answer: string, idx: number) => (
-                                    <li
-                                        key={idx}
-                                        className={`block w-fit cursor-pointer mb-5 py-3 rounded-md transition ease-in-out duration-500 px-3
-        ${selectedAnswerIndex === idx ? "bg-primary text-white" : "hover:bg-primary hover:text-white"}`}
-                                        onClick={() => onAnswerSelected(answer, idx)}
+                            <div>
+                                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                                    {question}
+                                </h3>
+                                <ul className="my-6 list-disc [&>li]:mt-2">
+                                    {answers.map((answer: string, idx: number) => (
+                                        <li
+                                            key={idx}
+                                            className={`block w-fit cursor-pointer mb-4 py-3 rounded-md transition ease-in-out duration-500
+            ${selectedAnswerIndex === idx ? "bg-primary text-white" : "hover:bg-primary hover:text-white"}`}
+                                            onClick={() => onAnswerSelected(answer, idx)}
+                                        >
+                                            <span className="px-2">{answerLabels[idx]} {answer}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <div className="flex pl-2 gap-10">
+                                    <Button
+                                        onClick={prevQuestion}
+                                        disabled={activeQuestion === 0}
+                                        className="font-bold"
+                                        variant={"outline"}
                                     >
-                                        <span>{answerLabels[idx]} {answer}</span>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <div className="flex  gap-10">
-                                <Button
-                                    onClick={prevQuestion}
-                                    disabled={activeQuestion === 0}
-                                    className="font-bold"
-                                    variant={"outline"}
-                                >
-                                    ← Prev
-                                </Button>
-
-                                <Button
-                                    onClick={nextQuestion}
-                                    disabled={!checked}
-                                    className="font-bold"
-                                    variant={"outline"}
-                                >
-                                    {activeQuestion === filteredQuestions.length - 1
-                                        ? "Finish"
-                                        : "Next →"}
-                                </Button>
+                                        ← Prev
+                                    </Button>
+                                    <Button
+                                        onClick={nextQuestion}
+                                        disabled={!checked}
+                                        className="font-bold"
+                                        variant={"outline"}
+                                    >
+                                        {activeQuestion === filteredQuestions.length - 1
+                                            ? "Finish"
+                                            : "Next →"}
+                                    </Button>
+                                </div>
                             </div>
+                        </>
+                    ) : (
+                        <div className="text-center">
+                            <h3 className="text-2xl uppercase mb-10">
+                                Results 📈
+                            </h3>
+                            <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-10">
+                                <StatCard
+                                    title="Percentage"
+                                    value={`${(results.score / filteredQuestions.length) * 100}%`}
+                                />
+                                <StatCard
+                                    title="Total Questions"
+                                    value={filteredQuestions.length}
+                                />
+                                <StatCard
+                                    title=" Total Score"
+                                    value={results.score}
+                                />
+                                <StatCard
+                                    title="Correct Answers"
+                                    value={results.correctAnswers}
+                                />
+                                <StatCard
+                                    title="Wrong Answers"
+                                    value={results.wrongAnswers}
+                                />
+                            </div>
+                            <button
+                                onClick={() => window.location.reload()}
+                                className="mt-10 font-bold uppercase"
+                            >
+                                Restart Quiz
+                            </button>
                         </div>
-                    </>
-                ) : (
-                    <div className="text-center">
-                        <h3 className="text-2xl uppercase mb-10">
-                            Results 📈
-                        </h3>
-                        <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-10">
-                            <StatCard
-                                title="Percentage"
-                                value={`${(results.score / filteredQuestions.length) * 100}%`}
-                            />
-                            <StatCard
-                                title="Total Questions"
-                                value={filteredQuestions.length}
-                            />
-                            <StatCard
-                                title=" Total Score"
-                                value={results.score}
-                            />
-                            <StatCard
-                                title="Correct Answers"
-                                value={results.correctAnswers}
-                            />
-                            <StatCard
-                                title="Wrong Answers"
-                                value={results.wrongAnswers}
-                            />
-                        </div>
-                        <button
-                            onClick={() => window.location.reload()}
-                            className="mt-10 font-bold uppercase"
-                        >
-                            Restart Quiz
-                        </button>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
-        </div>
+        </Container>
     );
 };
 
