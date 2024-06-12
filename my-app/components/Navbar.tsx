@@ -14,19 +14,9 @@ import {
 } from "@/components/ui/navigation-menu"
 import { Container } from "./Container";
 import { Button } from "./ui/button";
-import React from "react";
-const components: { title: string; href: string; score: number; }[] = [
-    {
-        title: "Threats to AI Chatbots",
-        href: "/quiz/1",
-        score: 0,
-    },
-    {
-        title: "What is AI?",
-        href: '/quiz/2',
-        score: 0,
-    }
-]
+import React, { useEffect, useState } from "react";
+import { useUser } from "@clerk/clerk-react";
+
 const ListItem = React.forwardRef<
     React.ElementRef<"a">,
     React.ComponentPropsWithoutRef<"a">
@@ -37,22 +27,44 @@ const ListItem = React.forwardRef<
                 <a
                     ref={ref}
                     className={cn(
-                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                        "flex select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
                         className
                     )}
                     {...props}
                 >
-                    <div className="text-sm font-medium leading-none">{title}</div>
-                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        {children}
-                    </p>
+                    <div className="flex items-center justify-between w-80">
+                        <div className="text-sm font-medium leading-none pl-4">{title}</div>
+                        <p className="text-sm leading-snug text-muted-foreground">
+                            {children}
+                        </p>
+                    </div>
                 </a>
             </NavigationMenuLink>
         </li>
+
     )
 })
 ListItem.displayName = "ListItem"
 const Navbar = () => {
+    const { isSignedIn, user, isLoaded } = useUser();
+    const [quizResults, setQuizResults] = useState([]);
+    
+    const [data, setData] = useState(null);
+
+  
+
+    const components: { title: string; href: string; score: number; }[] = [
+        {
+            title: "Threats to AI Chatbots",
+            href: "/quiz/1",
+            score: 0,
+        },
+        {
+            title: "What is AI?",
+            href: '/quiz/2',
+            score: 0,
+        }
+    ]
     return (
         <Container className="sticky top-0 z-50 bg-white" variant={"breakpointPadded"}>
             <div className="w-full">
@@ -69,7 +81,7 @@ const Navbar = () => {
                                 <NavigationMenuItem>
                                     <Link href="/module" legacyBehavior passHref>
                                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                            <div className="pl-5">Modules</div>
+                                            <div className="pl-4">Modules</div>
                                         </NavigationMenuLink>
                                     </Link>
                                 </NavigationMenuItem>

@@ -54,14 +54,14 @@ const Quiz = ({ questions, userId, selectedQuizId }: QuizProps) => {
     setResults((prev) =>
       selectedAnswer
         ? {
-            ...prev,
-            score: prev.score + 1,
-            correctAnswers: prev.correctAnswers + 1,
-          }
+          ...prev,
+          score: prev.score + 1,
+          correctAnswers: prev.correctAnswers + 1,
+        }
         : {
-            ...prev,
-            wrongAnswers: prev.wrongAnswers + 1,
-          }
+          ...prev,
+          wrongAnswers: prev.wrongAnswers + 1,
+        }
     );
     if (activeQuestion !== filteredQuestions.length - 1) {
       setActiveQuestion((prev) => prev + 1);
@@ -143,11 +143,10 @@ const Quiz = ({ questions, userId, selectedQuizId }: QuizProps) => {
                   {answers.map((answer: string, idx: number) => (
                     <li
                       key={idx}
-                      className={`block w-fit cursor-pointer mb-4 py-3 rounded-md transition ease-in-out duration-500 ${
-                        selectedAnswerIndex === idx
+                      className={`block w-fit cursor-pointer mb-4 py-3 rounded-md transition ease-in-out duration-500 ${selectedAnswerIndex === idx
                           ? "bg-primary text-white"
                           : "hover:bg-primary hover:text-white"
-                      }`}
+                        }`}
                       onClick={() => onAnswerSelected(answer, idx)}
                     >
                       <span className="px-2">
@@ -179,13 +178,14 @@ const Quiz = ({ questions, userId, selectedQuizId }: QuizProps) => {
               </div>
             </>
           ) : (
-            <div className="text-center">
+            <div className="text-center animate-fade">
               <h3 className="text-2xl uppercase mb-10">Results 📈</h3>
               <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-10">
                 <StatCard
                   title="Percentage"
-                  value={`${(results.score / filteredQuestions.length) * 100}%`}
+                  value={`${Math.round((results.score / filteredQuestions.length) * 100)}%`}
                 />
+
                 <StatCard
                   title="Total Questions"
                   value={filteredQuestions.length}

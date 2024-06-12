@@ -64,18 +64,6 @@ const Page = () => {
             </div>
           </CardFooter>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>What is AI?</CardTitle>
-            <CardDescription>Card Description</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>Card Content</p>
-          </CardContent>
-          <CardFooter>
-            <p>Card Footer</p>
-          </CardFooter>
-        </Card>
       </section>
     </Container>
   )

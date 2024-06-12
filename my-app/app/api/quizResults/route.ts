@@ -43,3 +43,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.error();
   }
 }
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const userId = searchParams.get("userId");
+
+  if (!userId) {
+    return NextResponse.json({ error: "UserId is required" }, { status: 400 });
+  }
+
+  try {
+    const results = await prisma.quizResult.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+
+    return NextResponse.json({ results });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Failed to fetch quiz results" }, { status: 500 });
+  }
+}
