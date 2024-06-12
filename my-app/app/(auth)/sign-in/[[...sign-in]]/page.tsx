@@ -1,7 +1,7 @@
 import { SignIn } from "@clerk/nextjs";
 
 export default function Page() {
-  return <div className="flex min-h-screen flex-col items-center p-24">
+  return <div className="flex min-h-screen flex-col items-center p-24 animate-fade">
       <SignIn />
   </div>;
 }

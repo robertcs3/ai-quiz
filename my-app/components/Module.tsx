@@ -1,6 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Container } from "./Container";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface ModuleProps {
     modules: {
@@ -17,6 +19,15 @@ const Module = ({ modules, selectedModuleId }: ModuleProps) => {
         (m) => m.moduleId === selectedModuleId
     );
 
+    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
+    const handleQuizClick = () => {
+        setTimeout(() => {
+            setIsLoading(true);
+            router.push(`/quiz/${selectedModuleId}`);
+        }, 250);
+    };
+
     return (
         <Container variant={"narrowConstrainedPadded"}>
             <div className="min-h-[500px]">
@@ -24,7 +35,7 @@ const Module = ({ modules, selectedModuleId }: ModuleProps) => {
                     {filteredModules.map((module, index) => (
                         <div key={index} className="mb-10 border-b-2">
                             <div className="flex mb-10 ">
-            
+
                                 <div>
                                     <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
                                         {module.title}
@@ -32,16 +43,16 @@ const Module = ({ modules, selectedModuleId }: ModuleProps) => {
                                 </div>
                             </div>
                             <div className=" pb-12">
-                                
-                                    {module.sections.map((section, sectionIndex) => (
-                                        <p key={sectionIndex} className="leading-7 [&:not(:first-child)]:mt-6">{section}</p>
-                                    ))}
-                                
+
+                                {module.sections.map((section, sectionIndex) => (
+                                    <p key={sectionIndex} className="leading-7 [&:not(:first-child)]:mt-6">{section}</p>
+                                ))}
+
                             </div>
                         </div>
                     ))}
                     <div className="flex justify-center">
-                        <Button className="font-bold">
+                        <Button className="font-bold" size={'sm'} isLoading={isLoading} onClick={handleQuizClick}>
                             Take the Quiz!
                         </Button>
                     </div>
